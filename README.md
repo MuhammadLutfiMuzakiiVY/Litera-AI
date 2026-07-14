@@ -39,6 +39,33 @@ Sistem Litera-AI bekerja secara end-to-end melalui tahapan berikut untuk memberi
 
 ---
 
+## 🔬 1.5. Konsep Dasar & Struktur Fungsi (Core Concepts & Function Structure)
+
+Sistem Litera-AI didasarkan pada metodologi pedagogi modern dan arsitektur rekayasa perangkat lunak terdistribusi berikut:
+
+### 1. Konsep Pedagogi & Kecerdasan Buatan (Pedagogical & AI Concepts)
+* **Asesmen Diagnostik Adaptif (Adaptive Diagnostic Assessment)**:
+  Pendekatan evaluasi kognitif awal menggunakan klasifikasi berbasis kemahiran membaca (Reading Proficiency Level). Asesmen tidak hanya menilai benar/salah jawaban, tetapi juga memetakan kemampuan interpretasi alur, pengenalan gaya bahasa (majas), dan pemahaman semantik teks.
+* **Dynamic Difficulty Adjustment (DDA)**:
+  Sistem penyesuaian kesulitan kuis secara real-time yang memposisikan belajar murid dalam *Zone of Proximal Development (ZPD)*. Algoritma DDA memantau parameter rasio kebenaran (accuracy) dan latensi respon pengerjaan (response time) untuk menentukan tingkat kesulitan soal berikutnya secara dinamis, guna meminimalkan rasa frustrasi (jika soal terlalu sulit) atau kebosanan (jika soal terlalu mudah).
+* **Knowledge Tracing (Penelusuran Pengetahuan)**:
+  Menganalisis akumulasi riwayat kuis murid untuk memetakan kekuatan dan kelemahan spesifik kognitif sastra mereka (misalnya, pengenalan majas personifikasi vs metafora).
+
+### 2. Struktur Fungsi Utama Program (Core Functional Structure)
+* **Modul Keamanan & Autentikasi (Auth & Security Hub)**:
+  - Fungsi: Mengatur izin akses multi-role (Guru, Orang Tua, Siswa, Admin).
+  - Logika Keamanan: Implementasi OTP token berdurasi pendek berbasis JWT (Json Web Token) untuk login aman serta logging IP Address pada audit log.
+* **Mesin Pembuat Soal Gemini AI (Gemini AI Quiz Generation Engine)**:
+  - Fungsi: Membuat soal kuis sastra secara otomatis.
+  - Logika: Menerima naskah novel dari pustaka digital, memproses prompt terstruktur (Taksonomi Bloom) melalui API Gemini, menghasilkan array JSON soal berformat terstandarisasi.
+* **Modul Sinkronisasi Data Luar Jaringan (Offline Data Sync Hub)**:
+  - Fungsi: Sinkronisasi database klien seluler dengan database server PostgreSQL.
+  - Logika: Menggunakan SQLite/Hive di sisi klien untuk antrean outbox, kemudian diproses dalam mode batch request oleh API backend FastAPI untuk pembaruan record `StudentProgress` dan analitik monitoring kelas guru.
+* **Dashboard Analitik Guru & Orang Tua (Visual Analytics & Recommendations)**:
+  - Fungsi: Pengolahan data statistik keaktifan dan skor kuis menjadi visualisasi chart dispersion, serta penayangan tips bimbingan AI bagi orang tua.
+
+---
+
 ## 📂 2. Struktur Workspace & Penjelasan Modul (Workspace Structure)
 
 ```text
