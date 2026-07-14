@@ -1,7 +1,7 @@
 # 📱 Litera-AI Monorepo (Mobile Client, Backend API, & AI Services)
 
 <p align="center">
-  <img src="apps/mobile/assets/images/logo.png" alt="Litera-AI Logo" width="140" height="140" />
+  <img src="apps/mobile/assets/images/logo.png" alt="Litera-AI Logo" width="240" height="240" />
 </p>
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-blue?style=for-the-badge&logo=flutter)](https://flutter.dev/)
