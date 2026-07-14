@@ -126,6 +126,33 @@ Modul AI Litera-AI terpisah dalam package independen untuk memudahkan deployment
   - **Logika**: Jika akurasi > 85% dengan durasi cepat, tingkat kognitif soal berikutnya ditingkatkan. Jika akurasi < 50%, tingkat kognitif diturunkan (DDA Decision Tree).
   - **Output**: ID set kuis berikutnya yang paling ideal dengan kondisi mental dan kompetensi siswa saat ini.
 
+### 📦 5.5. Daftar Dependensi & Pustaka Utama (Monorepo Dependencies)
+
+Monorepo Litera-AI membagi dependensi berdasarkan masing-masing modul untuk menjaga isolasi kode yang rapi:
+
+#### 📱 Modul Mobile (Flutter/Dart)
+| Library | Peran & Alasan Penggunaan (Purpose) |
+|---|---|
+| `flutter_riverpod` | State management reaktif yang modular dan aman dari memory leaks. |
+| `go_router` | Routing berbasis deklaratif untuk mempermudah navigasi berproteksi auth guard. |
+| `hive` & `hive_flutter` | Database NoSQL lokal yang sangat ringan dan cepat untuk caching offline-first. |
+| `connectivity_plus` | Memantau perubahan konektivitas internet siswa secara real-time. |
+| `http` | Melakukan request asinkron ke server FastAPI. |
+
+#### ⚡ Modul Backend (FastAPI/Python)
+| Library | Peran & Alasan Penggunaan (Purpose) |
+|---|---|
+| `fastapi` | RESTful API server asinkron dengan dokumentasi OpenAPI otomatis. |
+| `sqlalchemy` | ORM asinkron terpopuler untuk interaksi data PostgreSQL. |
+| `alembic` | Generator migrasi otomatis untuk melacak perubahan skema database. |
+| `redis` | Caching token OTP JWT dan status pengerjaan kuis jangka pendek. |
+
+#### 🤖 Modul AI Engine (Python)
+| Library | Peran & Alasan Penggunaan (Purpose) |
+|---|---|
+| `numpy` | Pemrosesan matriks probabilitas kognitif siswa secara cepat. |
+| `scipy` | Perhitungan statistik lanjutan untuk model evaluasi kognitif. |
+
 ---
 
 ## 🚀 6. Panduan Instalasi Lengkap (Setup & Installation)
@@ -192,8 +219,23 @@ graph TD
     subgraph AI_Engine [AI Engine]
         D -->|triggers KT & DDA| G[Predictive AI Engine]
         G -->|Knowledge Tracing / DDA decisions| D
-    end
 ```
+
+### 🎬 7.5. Skenario Simulasi Penggunaan Ekosistem (System Simulation Scenarios)
+
+Untuk memberikan gambaran yang lebih jelas tentang bagaimana data mengalir di platform ini, berikut adalah dua skenario penggunaan utama:
+
+#### Skenario A: Pembuatan Kuis Otomatis oleh Guru
+1. **Pilihan Novel**: Guru masuk ke `/guru/materials` dan memilih naskah novel klasik *Siti Nurbaya*.
+2. **AI Generation**: Guru mengklik tombol "Buat Kuis dengan AI". Tindakan ini memicu pemrosesan template prompt kognitif di `server/ai/prompt-registry.ts`.
+3. **Penyimpanan JSON**: API Gemini membalas dengan struktur array soal kuis (soal, pilihan jawaban, kunci, tingkat Bloom). Soal disimpan dalam field `Quiz.questions` berformat JSON di database PostgreSQL melalui Prisma.
+4. **Push Notification**: Sistem memberitahu seluruh siswa kelas tersebut melalui WebSocket/Polling bahwa kuis membaca baru telah tersedia.
+
+#### Skenario B: Pengambilan Asesmen oleh Siswa dan Analisis Guru
+1. **Pengerjaan Soal**: Siswa menyelesaikan kuis di aplikasi mobile. Data nilai, tingkat kesulitan, dan durasi pengerjaan dikirim ke server.
+2. **Pembaruan Profil**: Server memproses dan memperbarui record `StudentProgress` (misalnya, mengubah status tingkat membaca siswa dari "Pemula" menjadi "Menengah").
+3. **Visualisasi Dashboard**: Guru membuka `/guru/reports` dan melihat chart dispersi nilai kelas terupdate, lengkap dengan identifikasi klaster siswa yang mengalami kesulitan membaca.
+4. **Rekomendasi Orang Tua**: Wali murid masuk ke `/orang-tua` dan menerima instruksi taktis berbasis AI: *"Siswa mengalami kesulitan memahami majas sarkasme di Novel Salah Asuhan. Mohon dampingi dengan membacakan teks halaman 45-50 bersama."*
 
 ---
 
