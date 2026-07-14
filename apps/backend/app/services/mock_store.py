@@ -173,7 +173,9 @@ class MockStore:
             ],
         )
 
-    def module_progress(self, module_id: UUID, status: str, progress: int) -> ModuleProgress:
+    def module_progress(
+        self, module_id: UUID, status: str, progress: int
+    ) -> ModuleProgress:
         return ModuleProgress(
             module_id=module_id,
             status=status,

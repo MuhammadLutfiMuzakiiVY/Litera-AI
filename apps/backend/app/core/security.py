@@ -16,7 +16,9 @@ def create_access_token(*, subject: str, role: str) -> str:
         "sub": subject,
         "role": role,
         "iat": int(now.timestamp()),
-        "exp": int((now + timedelta(minutes=settings.access_token_minutes)).timestamp()),
+        "exp": int(
+            (now + timedelta(minutes=settings.access_token_minutes)).timestamp()
+        ),
         "jti": str(uuid4()),
     }
     return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
@@ -37,7 +39,9 @@ def create_refresh_token(*, subject: str, role: str) -> str:
 
 def decode_token(token: str) -> dict[str, object]:
     try:
-        return jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
+        return jwt.decode(
+            token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]
+        )
     except jwt.PyJWTError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -46,7 +50,7 @@ def decode_token(token: str) -> dict[str, object]:
 
 
 def get_current_user_id(
-    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),  # noqa: B008
 ) -> str:
     if credentials is None:
         raise HTTPException(
